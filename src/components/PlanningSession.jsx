@@ -4,6 +4,7 @@ import Votes from './Votes'
 import Ballot from './Ballot'
 import { Alert, Container, Row, Col } from 'reactstrap'
 import firebaseApp from '../FirebaseApp'
+import QRCode from 'qrcode.react'
 
 export default class PlanningSession extends React.Component {
 
@@ -120,7 +121,9 @@ export default class PlanningSession extends React.Component {
                         </Container>
 
                         <Votes sessionId={this.state.sessionId} reveal={this.state.reveal} onReveal={(flag) => this.handleReveal(flag)} />
-                        
+
+                        <QRCode value={window.location.href} xs="mx-auto" />
+
                         <UserNameDialog showing={this.state.usernameDialogShowing} onUserNameSet={(username) => this.handleUserNameSet(username)} onUserNameCancel={() => this.handleUserNameCancel()} />
                     </div>
                 }
