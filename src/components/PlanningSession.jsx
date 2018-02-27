@@ -113,17 +113,14 @@ export default class PlanningSession extends React.Component {
                             </Row>
 
                             <Row className="justify-content-center">
-                                <Col xs="mx-auto">
+                                <Col xs="mx-auto mt-2 mb-2">
                                     <Ballot voter={this.state.voter} onCastVote={(vote) => this.handleCastBallot(vote)} />
                                 </Col>
                             </Row>
-
-                            <Row>
-                                <Col xs={{ size: 6, offset: 2 }}>
-                                    <Votes sessionId={this.state.sessionId} reveal={this.state.reveal} onReveal={(flag) => this.handleReveal(flag)} />
-                                </Col>
-                            </Row>
                         </Container>
+
+                        <Votes sessionId={this.state.sessionId} reveal={this.state.reveal} onReveal={(flag) => this.handleReveal(flag)} />
+                        
                         <UserNameDialog showing={this.state.usernameDialogShowing} onUserNameSet={(username) => this.handleUserNameSet(username)} onUserNameCancel={() => this.handleUserNameCancel()} />
                     </div>
                 }

@@ -99,7 +99,7 @@ export default class Votes extends React.Component {
 
     render() {
         return (
-            <Container style={{ width: '600px' }}>
+            <Container>
                 <Row>
                     {this.state.isAdmin ?
                         <Col sm={{ size: 6, offset: 6 }} style={{ padding: '.5rem' }} >
