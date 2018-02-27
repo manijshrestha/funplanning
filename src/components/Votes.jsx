@@ -8,8 +8,10 @@ class VoterRow extends React.Component {
         let voteState = null
         if (this.props.user.vote && this.props.reveal) {
             voteState = <h4>{this.props.user.vote}</h4>
-        } else {
+        } else if (this.props.reveal) {
             voteState = <h4>-</h4>
+        } else {
+            voteState = <h4>*</h4>
         }
         return (
             <tr>
@@ -99,7 +101,7 @@ export default class Votes extends React.Component {
 
     render() {
         return (
-            <Container style={{ width: '600px' }}>
+            <Container>
                 <Row>
                     {this.state.isAdmin ?
                         <Col sm={{ size: 6, offset: 6 }} style={{ padding: '.5rem' }} >
