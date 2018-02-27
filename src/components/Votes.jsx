@@ -8,8 +8,10 @@ class VoterRow extends React.Component {
         let voteState = null
         if (this.props.user.vote && this.props.reveal) {
             voteState = <h4>{this.props.user.vote}</h4>
-        } else {
+        } else if (this.props.reveal) {
             voteState = <h4>-</h4>
+        } else {
+            voteState = <h4>*</h4>
         }
         return (
             <tr>
