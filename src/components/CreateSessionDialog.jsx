@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button, InputGroup, InputGroupAddon, Input } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button, InputGroup, InputGroupAddon, Input, Label } from 'reactstrap';
 import firebase from 'firebase';
 import firebaseApp from '../FirebaseApp';
 
@@ -9,7 +9,8 @@ export default class CreateSessionDialog extends React.Component {
         super(props)
         this.state = {
             sessionName: "",
-            username: ""
+            username: "",
+            allowVoteChange: true
         }
     }
 
@@ -22,16 +23,17 @@ export default class CreateSessionDialog extends React.Component {
         // Login Info obtained
         firebaseApp.auth().onAuthStateChanged(user => {
             console.log("Login state changed", user)
-            var sessionId = this.addSessionToDb(this.state.sessionName, this.state.username, user.uid)
+            var sessionId = this.addSessionToDb(this.state.sessionName, this.state.username, this.state.allowVoteChange, user.uid)
             this.setState({ sessionName: "", username: "" })
             this.props.onCreateSuccess(sessionId)
         })
     }
 
-    addSessionToDb(sessionName, username, uid) {
+    addSessionToDb(sessionName, username, allowVoteChange, uid) {
         var planningSession = firebaseApp.database().ref('planning-sessions').push()
         var newSession = {
-            "id": planningSession.key, "name": sessionName, "revealed": false, "created": firebase.database.ServerValue.TIMESTAMP
+            "id": planningSession.key, "name": sessionName, "revealed": false, "created": firebase.database.ServerValue.TIMESTAMP,
+            "allowVoteChange": allowVoteChange
         }
         planningSession.set(newSession)
 
@@ -54,6 +56,10 @@ export default class CreateSessionDialog extends React.Component {
         this.setState({ username: e.target.value })
     }
 
+    onAllowVoteChange(e) {
+        this.setState({ allowVoteChange: e.target.checked })
+    }
+
     render() {
         return (
             <Modal isOpen={this.props.showing}>
@@ -69,6 +75,13 @@ export default class CreateSessionDialog extends React.Component {
                         <InputGroupAddon addonType="prepend">@</InputGroupAddon>
                         <Input placeholder="Your Name" value={this.state.username} onChange={(e) => this.onUserNameChange(e)} />
                     </InputGroup>
+                    <br />
+                    <div className="mx-4">
+                        <Label check>
+                            <Input type="checkbox" checked={this.state.allowVoteChange} onChange={(e) => this.onAllowVoteChange(e)} />
+                            Allow vote to be changed after voting
+                        </Label>
+                    </div>
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={() => this.createSession()} disabled={this.state.username.length < 2 || this.state.sessionName.length < 2}>Create</Button>
