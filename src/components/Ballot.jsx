@@ -26,7 +26,7 @@ export default class Ballot extends React.Component {
                 <CardBody>
                     <CardTitle>{this.props.voter.name}</CardTitle>
                     <CardText>
-                        <Input placeholder="Vote" disabled={this.props.voter.voted} value={this.state.vote} onChange={e => this.onVoteChange(e)} />
+                        <Input placeholder="Vote" disabled={!this.props.allowVoteChange && this.props.voter.voted} value={this.state.vote} onChange={e => this.onVoteChange(e)} />
                     </CardText>
                     <Button color="success" disabled={this.state.vote.length < 1} onClick={() => this.onCastVote()}>Vote</Button>
                 </CardBody>
