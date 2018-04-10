@@ -16,7 +16,8 @@ export default class PlanningSession extends React.Component {
             sessionId: "",
             sessionName: "",
             reveal: false,
-            voter: {}
+            voter: {},
+            allowVoteChange: false
         }
     }
 
@@ -40,7 +41,7 @@ export default class PlanningSession extends React.Component {
             planningReg.on('value', snapshot => {
                 let record = snapshot.val()
                 if (record) {
-                    this.setState({ sessionName: record.name, reveal: record.revealed })
+                    this.setState({ sessionName: record.name, reveal: record.revealed, allowVoteChange: record.allowVoteChange })
                 } else {
                     this.setState({ invalidSession: true })
                 }
@@ -115,7 +116,7 @@ export default class PlanningSession extends React.Component {
 
                             <Row className="justify-content-center">
                                 <Col xs="mx-auto mt-2 mb-2">
-                                    <Ballot voter={this.state.voter} onCastVote={(vote) => this.handleCastBallot(vote)} />
+                                    <Ballot voter={this.state.voter} onCastVote={(vote) => this.handleCastBallot(vote)} allowVoteChange={this.state.allowVoteChange} />
                                 </Col>
                             </Row>
                         </Container>
