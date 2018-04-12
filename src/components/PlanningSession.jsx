@@ -72,12 +72,12 @@ export default class PlanningSession extends React.Component {
         this.setState({ usernameDialogShowing: false })
     }
 
-    handleUserNameSet(username) {
+    handleUserNameSet(username, nonVoter) {
         this.hideUserNameDialog()
         console.log('set the session name to ', username)
         var userId = firebaseApp.auth().currentUser.uid
         var userRecord = firebaseApp.database().ref('planning-members/' + this.state.sessionId).child(userId)
-        var currentUser = { "uid": userId, "name": username }
+        var currentUser = { "uid": userId, "name": username, "nonVoter": nonVoter }
         userRecord.set(currentUser)
     }
 
@@ -125,7 +125,7 @@ export default class PlanningSession extends React.Component {
 
                         <QRCode value={window.location.href} xs="mx-auto" />
 
-                        <UserNameDialog showing={this.state.usernameDialogShowing} onUserNameSet={(username) => this.handleUserNameSet(username)} onUserNameCancel={() => this.handleUserNameCancel()} />
+                        <UserNameDialog showing={this.state.usernameDialogShowing} onUserNameSet={(username, nonVoter) => this.handleUserNameSet(username, nonVoter)} onUserNameCancel={() => this.handleUserNameCancel()} />
                     </div>
                 }
             </div>

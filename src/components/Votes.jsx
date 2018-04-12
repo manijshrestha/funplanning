@@ -120,13 +120,14 @@ export default class Votes extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.voters.map(user => <VoterRow
-                                user={user}
-                                isAdmin={this.state.isAdmin}
-                                isYou={user.uid === this.state.loggedInUid}
-                                reveal={this.props.reveal}
-                                onRemove={(user) => { this.onRemoveVoter(user) }}
-                                key={user.uid} />)}
+                            {this.state.voters.filter(user => user.nonVoter != true)
+                                .map(user => <VoterRow
+                                    user={user}
+                                    isAdmin={this.state.isAdmin}
+                                    isYou={user.uid === this.state.loggedInUid}
+                                    reveal={this.props.reveal}
+                                    onRemove={(user) => { this.onRemoveVoter(user) }}
+                                    key={user.uid} />)}
                         </tbody>
                     </Table>
                 </Row>
