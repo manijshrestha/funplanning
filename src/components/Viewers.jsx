@@ -74,27 +74,31 @@ export default class Viewers extends React.Component {
     }
 
     render() {
-        return (
-            <Container>
-                <Row>
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th>Viewer</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.viewers.filter(user => user.nonVoter === true)
-                                .map(user => <ViewerRow
-                                    user={user}
-                                    isAdmin={this.state.isAdmin}
-                                    isYou={user.uid === this.state.loggedInUid}
-                                    onRemove={(user) => { this.onRemoveViewer(user) }}
-                                    key={user.uid} />)}
-                        </tbody>
-                    </Table>
-                </Row>
-            </Container>
-        )
+        let hasViewer = this.state.viewers.some(user => user.nonVoter === true)
+        let viewersList = ""
+        if (hasViewer) {
+            viewersList =
+                <Container>
+                    <Row>
+                        <Table>
+                            <thead>
+                                <tr>
+                                    <th>Viewer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.state.viewers.filter(user => user.nonVoter === true)
+                                    .map(user => <ViewerRow
+                                        user={user}
+                                        isAdmin={this.state.isAdmin}
+                                        isYou={user.uid === this.state.loggedInUid}
+                                        onRemove={(user) => { this.onRemoveViewer(user) }}
+                                        key={user.uid} />)}
+                            </tbody>
+                        </Table>
+                    </Row>
+                </Container>
+        }
+        return (<div>{viewersList}</div>)
     }
 }
