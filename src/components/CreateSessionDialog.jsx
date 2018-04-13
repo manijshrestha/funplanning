@@ -10,6 +10,7 @@ export default class CreateSessionDialog extends React.Component {
         this.state = {
             sessionName: "",
             username: "",
+            nonVoter: false,
             allowVoteChange: true
         }
     }
@@ -23,13 +24,13 @@ export default class CreateSessionDialog extends React.Component {
         // Login Info obtained
         firebaseApp.auth().onAuthStateChanged(user => {
             console.log("Login state changed", user)
-            var sessionId = this.addSessionToDb(this.state.sessionName, this.state.username, this.state.allowVoteChange, user.uid)
+            var sessionId = this.addSessionToDb(this.state.sessionName, this.state.username, this.state.nonVoter, this.state.allowVoteChange, user.uid)
             this.setState({ sessionName: "", username: "" })
             this.props.onCreateSuccess(sessionId)
         })
     }
 
-    addSessionToDb(sessionName, username, allowVoteChange, uid) {
+    addSessionToDb(sessionName, username, nonVoter, allowVoteChange, uid) {
         var planningSession = firebaseApp.database().ref('planning-sessions').push()
         var newSession = {
             "id": planningSession.key, "name": sessionName, "revealed": false, "created": firebase.database.ServerValue.TIMESTAMP,
@@ -41,7 +42,8 @@ export default class CreateSessionDialog extends React.Component {
         var user = {
             "uid": uid,
             "name": username,
-            "isAdmin": true
+            "isAdmin": true,
+            "nonVoter": nonVoter
         }
 
         members.set(user)
@@ -60,6 +62,10 @@ export default class CreateSessionDialog extends React.Component {
         this.setState({ allowVoteChange: e.target.checked })
     }
 
+    onNonVoterChange(e) {
+        this.setState({ nonVoter: e.target.checked })
+    }
+
     render() {
         return (
             <Modal isOpen={this.props.showing}>
@@ -75,6 +81,12 @@ export default class CreateSessionDialog extends React.Component {
                         <InputGroupAddon addonType="prepend">@</InputGroupAddon>
                         <Input placeholder="Your Name" value={this.state.username} onChange={(e) => this.onUserNameChange(e)} />
                     </InputGroup>
+                    <div className="mx-4">
+                        <Label check>
+                            <Input type="checkbox" checked={this.state.nonVoter} onChange={(e) => this.onNonVoterChange(e)} />
+                            I wont be voting, I am just watching.
+                        </Label>
+                    </div>
                     <br />
                     <div className="mx-4">
                         <Label check>
