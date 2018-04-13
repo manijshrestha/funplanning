@@ -120,7 +120,7 @@ export default class Votes extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.voters.filter(user => user.nonVoter != true)
+                            {this.state.voters.filter(user => user.nonVoter !== true)
                                 .map(user => <VoterRow
                                     user={user}
                                     isAdmin={this.state.isAdmin}

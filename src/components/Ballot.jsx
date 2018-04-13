@@ -22,7 +22,7 @@ export default class Ballot extends React.Component {
 
     render() {
         return (
-            <Card>
+            <Card style={{ display: this.props.voter.nonVoter ? 'none' : 'block' }}>
                 <CardBody>
                     <CardTitle>{this.props.voter.name}</CardTitle>
                     <CardText>

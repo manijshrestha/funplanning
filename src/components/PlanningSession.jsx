@@ -1,6 +1,7 @@
 import React from 'react'
 import UserNameDialog from './UserNameDialog'
 import Votes from './Votes'
+import Viewers from './Viewers'
 import Ballot from './Ballot'
 import { Alert, Container, Row, Col } from 'reactstrap'
 import firebaseApp from '../FirebaseApp'
@@ -122,6 +123,12 @@ export default class PlanningSession extends React.Component {
                         </Container>
 
                         <Votes sessionId={this.state.sessionId} reveal={this.state.reveal} onReveal={(flag) => this.handleReveal(flag)} />
+
+                        <Row className="justify-content-center">
+                            <Col xs="3">
+                                <Viewers sessionId={this.state.sessionId} />
+                            </Col>
+                        </Row>
 
                         <QRCode value={window.location.href} xs="mx-auto" />
 
