@@ -1,6 +1,7 @@
 import React from 'react'
 import UserNameDialog from './UserNameDialog'
 import Votes from './Votes'
+import Viewers from './Viewers'
 import Ballot from './Ballot'
 import { Alert, Container, Row, Col } from 'reactstrap'
 import firebaseApp from '../FirebaseApp'
@@ -72,12 +73,12 @@ export default class PlanningSession extends React.Component {
         this.setState({ usernameDialogShowing: false })
     }
 
-    handleUserNameSet(username) {
+    handleUserNameSet(username, nonVoter) {
         this.hideUserNameDialog()
         console.log('set the session name to ', username)
         var userId = firebaseApp.auth().currentUser.uid
         var userRecord = firebaseApp.database().ref('planning-members/' + this.state.sessionId).child(userId)
-        var currentUser = { "uid": userId, "name": username }
+        var currentUser = { "uid": userId, "name": username, "nonVoter": nonVoter }
         userRecord.set(currentUser)
     }
 
@@ -123,9 +124,15 @@ export default class PlanningSession extends React.Component {
 
                         <Votes sessionId={this.state.sessionId} reveal={this.state.reveal} onReveal={(flag) => this.handleReveal(flag)} />
 
+                        <Row className="justify-content-center">
+                            <Col xs="3">
+                                <Viewers sessionId={this.state.sessionId} />
+                            </Col>
+                        </Row>
+
                         <QRCode value={window.location.href} xs="mx-auto" />
 
-                        <UserNameDialog showing={this.state.usernameDialogShowing} onUserNameSet={(username) => this.handleUserNameSet(username)} onUserNameCancel={() => this.handleUserNameCancel()} />
+                        <UserNameDialog showing={this.state.usernameDialogShowing} onUserNameSet={(username, nonVoter) => this.handleUserNameSet(username, nonVoter)} onUserNameCancel={() => this.handleUserNameCancel()} />
                     </div>
                 }
             </div>
